@@ -1,0 +1,681 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "841dd82e-a1eb-4ad2-aed5-7ca4f6ac1b59",
+              "name": "emailFrom",
+              "value": "={{ $json.from.text }}",
+              "type": "string"
+            },
+            {
+              "id": "925c8835-fa85-44d2-9c44-360d4229c070",
+              "name": "emailSubject",
+              "value": "={{ $json.headers.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "ba97346c-25cc-47fb-bbde-af28bbb273aa",
+              "name": "emailBody",
+              "value": "={{ $json.html || $json.textPlain || $json.snippet || $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "8a4ad6a4-b1f2-4dff-bba4-be6da48e4637",
+              "name": "emailId",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "faebc8e7-f9f1-4ccb-ad2d-6bd987a8a1dc",
+              "name": "date_time",
+              "value": "={{ $json.headers.date }}",
+              "type": "string"
+            },
+            {
+              "id": "097d7e54-b4d2-4e20-9fd0-03d21dfb2982",
+              "name": "content",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        48,
+        416
+      ],
+      "id": "a1708ef9-f9ee-495a-a1e8-18dbb19ceb1a",
+      "name": "Workflow Configuration"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "months",
+              "triggerAtHour": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -176,
+        752
+      ],
+      "id": "8fcc9c00-8f75-4c45-8cb9-e9a94a9ba594",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 20,
+        "simple": false,
+        "filters": {
+          "includeSpamTrash": true,
+          "q": "in:trash"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        48,
+        752
+      ],
+      "id": "bea415b3-d250-4fbc-9ce2-f5fb9a3cfae7",
+      "name": "Get many messages",
+      "webhookId": "8bdf3ff0-e3df-4c6d-8e31-36930560e069",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "5KA4UtX9XB1g4Iuq",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 30,
+        "filters": {
+          "q": "in:spam"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        48,
+        976
+      ],
+      "id": "161237ad-4499-4d93-9619-36b0a7670ed6",
+      "name": "Get many messages1",
+      "webhookId": "412f250f-85c1-4c06-8ad8-20ca5188cbd7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "5KA4UtX9XB1g4Iuq",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        752
+      ],
+      "id": "44921525-ea89-4e3e-912b-fede6e6599d1",
+      "name": "Delete a message1",
+      "webhookId": "09f248be-1ff8-4810-abda-83f9b89a5bfc",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "5KA4UtX9XB1g4Iuq",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        976
+      ],
+      "id": "affbc637-429d-4f55-807c-8cf5179c3c05",
+      "name": "Delete a message2",
+      "webhookId": "a2937f72-6840-4046-870e-b7b0eacc632d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "5KA4UtX9XB1g4Iuq",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "months",
+              "triggerAtHour": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -176,
+        976
+      ],
+      "id": "4bfe473a-8f3f-42ec-83ce-6b900fb12653",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.isFampay }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    },
+                    "id": "fampay-check"
+                  },
+                  {
+                    "leftValue": "={{ $json.isTransaction }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    },
+                    "id": "transaction-check"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "fampay_transaction"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.isMeeting }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    },
+                    "id": "meeting-check"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "meeting"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8ad90cdf-fcef-4e39-aa45-e109d4aa0789",
+      "name": "Route Email by Type",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1072,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "messageId": "={{ $('Workflow Configuration').item.json.emailId }}"
+      },
+      "id": "aa43c84c-506f-446b-8427-4792e80dee0a",
+      "name": "Delete FamPay Transaction",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1296,
+        320
+      ],
+      "webhookId": "81f9dbb4-08c7-4a4f-a78d-9ca0ba7831b1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "sGhvU4uqrHwkwwBX",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "summary",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "start",
+              "value": "={{$json.date + 'T' + $json.time + ':00'}}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "end",
+              "value": "={{\n  (() => {\n    const [hour, minute] = $json.time.split(':').map(Number);\n    let newHour = hour + 1;\n    let newDate = $json.date;\n\n    if (newHour >= 24) {\n      newHour = newHour - 24;\n\n      const d = new Date($json.date);\n      d.setDate(d.getDate() + 1);\n      newDate = d.toISOString().split('T')[0];\n    }\n\n    return newDate + 'T' +\n      String(newHour).padStart(2, '0') +\n      ':' +\n      String(minute).padStart(2, '0') +\n      ':00';\n  })()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "description",
+              "value": "Meeting from email",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "41598732-4c15-49a9-b344-c6017361496f",
+      "name": "Prepare Meeting for Calendar",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1296,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "sricharanpalem07@gmail.com",
+          "mode": "list",
+          "cachedResultName": "sricharanpalem07@gmail.com"
+        },
+        "start": "={{ $json.start }}",
+        "end": "={{ $json.end }}",
+        "useDefaultReminders": false,
+        "additionalFields": {
+          "conferenceDataUi": {
+            "conferenceDataValues": {
+              "conferenceSolution": "hangoutsMeet"
+            }
+          },
+          "description": "={{ $json.description }}",
+          "summary": "={{ $json.summary }}"
+        }
+      },
+      "id": "7b7a28f5-9e61-4b26-b300-f864c94946f5",
+      "name": "Create Calendar Event",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1520,
+        512
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9lWWq4YO0hMgq8ql",
+          "name": "Google Calendar OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {
+          "dataPropertyAttachmentsPrefixName": "attachment_"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -176,
+        416
+      ],
+      "id": "e51992a5-c3a9-42a0-89e0-4b8fac4d0cb1",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "McNYQb58YTO6Qkxm",
+          "name": "Gmail account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        272,
+        416
+      ],
+      "id": "4535f5c0-cd93-4129-b798-afb2d107ed87",
+      "name": "Wait",
+      "webhookId": "9e797f94-05d6-485a-af11-fc7844cda096"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ 'Subject: ' + $('Workflow Configuration').item.json.emailSubject + '\\nBody: ' + $('Workflow Configuration').item.json.emailBody }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an AI assistant that analyzes email content and returns structured JSON.\n\nIMPORTANT RULES:\n- Only ONE of these can be true: isTransaction, isMeeting\n- Follow STRICT priority:\n  1. Meeting (highest)\n  2. FamPay Transaction\n- If one condition is true, set all others to false\n\n--------------------------------------------------\n\nSTEP 1: MEETING DETECTION (HIGHEST PRIORITY)\n\nIf email contains ANY of:\n- meet.google.com\n- zoom.us\n- teams.microsoft.com\n- \"Join with Google Meet\"\n- \"Join meeting\"\n- \"Start meeting\"\n\nThen:\nisMeeting = true\nisTransaction = false\nisFampay = false\n\n--------------------------------------------------\n\n\nSTEP 2: FAMPAY TRANSACTION DETECTION\n\nIf sender contains:\n- \"fampay\"\n- \"famapp\"\n\nThen:\nisFampay = true\n\nIf email also contains transaction keywords:\n- \"sent\"\n- \"received\"\n- \"paid\"\n- \"debited\"\n- \"credited\"\n- \"transaction\"\n- \"spent\"\n\nThen:\nisTransaction = true\nisMeeting = false\n\n\nElse:\nisTransaction = false\n\n--------------------------------------------------\n\nSTEP 3: DEFAULT\n\nIf none match:\nisFampay = false\nisTransaction = false\n\nisMeeting = false\n\n--------------------------------------------------\n\nSTEP 4: EXTRACT DETAILS (ONLY if  it is Meeting)\n\nExtract:\n- title (clean name of event/meeting)\n- date (YYYY-MM-DD format)\n- time (HH:MM 24-hour format)\n\nIf not available → return null\n\n--------------------------------------------------\n\nFINAL OUTPUT (STRICT JSON ONLY, NO WRAPPER)\n\n{\n  \"isFampay\": true/false,\n  \"isTransaction\": true/false,\n  \"isMeeting\": true/false,\n  \"title\": \"string or null\",\n  \"date\": \"YYYY-MM-DD or null\",\n  \"time\": \"HH:MM or null\"\n}\n\n--------------------------------------------------\n\nEmail:\nSubject: {{$json[\"subject\"]}}\nFrom: {{$json[\"from\"]}}\nBody: {{$json[\"html\"] || $json[\"text\"]}}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        496,
+        416
+      ],
+      "id": "04bc3759-25fa-47f3-98cb-2956ad889012",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        576,
+        640
+      ],
+      "id": "4f9da233-ce19-4a00-999f-e6348a8a7155",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "5NpNw6Trh6lAZi2R",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bab99eb0-b8ff-4f34-9107-9f2398feddce",
+              "name": "isFampay",
+              "value": "={{ JSON.parse($json.output).isFampay }}",
+              "type": "boolean"
+            },
+            {
+              "id": "85a6a99d-73ce-48f1-9c9f-ff381e14cb32",
+              "name": "isTransaction",
+              "value": "={{ JSON.parse($json.output).isTransaction }}",
+              "type": "boolean"
+            },
+            {
+              "id": "55517474-182f-4965-bcb8-a9e7f3a2a550",
+              "name": "isMeeting",
+              "value": "={{ JSON.parse($json.output).isMeeting }}",
+              "type": "boolean"
+            },
+            {
+              "id": "d123d565-2c1a-4e4a-ba77-3c7b6e800838",
+              "name": "title",
+              "value": "={{ JSON.parse($json.output).title }}",
+              "type": "string"
+            },
+            {
+              "id": "0c1b2f0a-076f-4f78-8d52-237aeaa90ceb",
+              "name": "date",
+              "value": "={{ JSON.parse($json.output).date }}",
+              "type": "string"
+            },
+            {
+              "id": "355eeea3-5768-4a73-8520-ef86cff629e6",
+              "name": "time",
+              "value": "={{ JSON.parse($json.output).time }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "include": "selected",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        848,
+        416
+      ],
+      "id": "6ba8ebe8-70a6-4067-941e-7914905a1c3e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -400,
+        416
+      ],
+      "id": "f3197188-fc01-4e86-b174-d3b4999cf9ad",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "Delete a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages1": {
+      "main": [
+        [
+          {
+            "node": "Delete a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete a message1": {
+      "main": [
+        []
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Get many messages1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Email by Type": {
+      "main": [
+        [
+          {
+            "node": "Delete FamPay Transaction",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Meeting for Calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Meeting for Calendar": {
+      "main": [
+        [
+          {
+            "node": "Create Calendar Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Route Email by Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "nl45bs42GRvK04Am",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "2e48a7ae-5654-4292-bd15-76f8623fa63f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8b5771ae2a5e6f98f54dd6126a8c402166f377be24a64d91db756876c8b80318"
+  },
+  "id": "j9V1pypvUt8pqD7R",
+  "tags": []
+}
